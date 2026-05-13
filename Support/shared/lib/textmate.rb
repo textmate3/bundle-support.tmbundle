@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby18
+#!/usr/bin/env ruby
 # encoding: utf-8
 
 require "#{ENV['TM_SUPPORT_PATH']}/private/track_usage.rb"
