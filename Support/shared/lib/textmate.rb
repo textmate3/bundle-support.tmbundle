@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-require "#{ENV['TM_SUPPORT_PATH']}/lib/osx/plist"
+require "#{ENV['TM_SUPPORT_PATH']}/private/plist"
 require "#{ENV['TM_SUPPORT_PATH']}/lib/escape.rb"
 require "#{ENV['TM_SUPPORT_PATH']}/lib/exit_codes.rb"
+require 'shellwords'
 
 module TextMate
 
@@ -101,9 +102,10 @@ module TextMate
 
     def prefs_for_key (key)
       prefs_file = "#{ENV['HOME']}/Library/Preferences/#{ENV['TM_APP_IDENTIFIER'] || 'com.macromates.textmate'}.plist"
-      File.open(prefs_file) do |f|
-        return OSX::PropertyList::load(f)[key]
-      end
+      return nil unless File.exist?(prefs_file)
+      xml = `plutil -convert xml1 -o - #{prefs_file.shellescape} 2>/dev/null`
+      return nil if xml.empty?
+      Plist.parse_xml(xml)[key]
     end
 
     def load_pattern (key, default_pattern)
