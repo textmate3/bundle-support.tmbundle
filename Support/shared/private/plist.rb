@@ -9,6 +9,7 @@ $LOADED_FEATURES.concat(Gem.find_files('libxml.rb'))
 $LOADED_FEATURES.concat(Gem.find_files('libxml/libxml.rb'))
 
 require 'cfpropertylist'
+require 'shellwords'
 
 module Plist
   module_function
@@ -16,6 +17,19 @@ module Plist
   def load(input)
     raw = read_input(input)
     CFPropertyList.native_types(CFPropertyList::List.new(data: raw).value)
+  rescue CFFormatError
+    # Strict XML parsers (nokogiri, REXML) reject TextMate bundle files that
+    # embed raw control bytes (e.g. ESC 0x1B inside <string>~\x1B</string> for
+    # Esc-keyed keyEquivalents). plutil tolerates them; round-trip through
+    # binary plist to bypass XML strictness while preserving every byte.
+    path = write_temp_for_plutil(raw, input)
+    begin
+      binary = IO.popen(['plutil', '-convert', 'binary1', '-o', '-', path], 'rb', &:read)
+      raise unless $?.success?
+      CFPropertyList.native_types(CFPropertyList::List.new(data: binary).value)
+    ensure
+      File.unlink(path) if path && File.exist?(path)
+    end
   end
 
   def dump(obj, format: :xml)
@@ -33,18 +47,30 @@ module Plist
     input
   end
 
+  def write_temp_for_plutil(raw, original)
+    return original if original.is_a?(String) && !original.include?("\0") && File.exist?(original)
+    require 'tempfile'
+    f = Tempfile.new(['plist-fallback', '.plist'])
+    f.binmode
+    f.write(raw)
+    f.close
+    f.path
+  end
+
   class << self
-    private :read_input
+    private :read_input, :write_temp_for_plutil
   end
 end
 
-[Array, Enumerator, Hash].each do |cls|
-  cls.class_eval do
-    def to_plist(options = {})
-      options[:plist_format] ||= CFPropertyList::List::FORMAT_XML
-      plist = CFPropertyList::List.new
-      plist.value = CFPropertyList.guess(self, options)
-      plist.to_str(options[:plist_format], options)
-    end
+# CFPropertyList already monkey-patches Array#to_plist / Hash#to_plist /
+# Enumerator#to_plist to default to FORMAT_BINARY. We want XML by default (to
+# match tm_dialog IPC expectations). Use Module#prepend so the existing methods
+# are overlaid without firing -w "method redefined" warnings.
+module PlistXmlDefault
+  def to_plist(options = {})
+    options[:plist_format] ||= CFPropertyList::List::FORMAT_XML
+    super
   end
 end
+
+[Array, Enumerator, Hash].each { |cls| cls.prepend(PlistXmlDefault) }
