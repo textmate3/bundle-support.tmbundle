@@ -279,7 +279,7 @@ module TextMate
 
             # this is a workaround for a presumed Leopard bug, see log entry for revision 8566 for more info
             if animate = start_parameters['progressAnimate']
-              open("|\"$DIALOG\" -t#{@dialog_token}", "w") { |io| io << { 'progressAnimate' => animate }.to_plist }
+              IO.popen("\"$DIALOG\" -t#{@dialog_token}", "w") { |io| io << { 'progressAnimate' => animate }.to_plist }
             end
           end
 
@@ -326,7 +326,7 @@ module TextMate
       private
 
       def run_dialog(command, *parms)
-        open("|\"$DIALOG\" #{command} #{parms.shelljoin}") { |io| Plist.parse_xml(io) }
+        IO.popen("\"$DIALOG\" #{command} #{parms.shelljoin}") { |io| Plist.parse_xml(io.read) }
       end
 
       def run_modal_dialog(*params)
