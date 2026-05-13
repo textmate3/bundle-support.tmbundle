@@ -119,7 +119,7 @@ module TextMate
               res[:print] << { :name => name, :class => file, :path => "#{path}/#{file}" }
             end
 
-          end if File.exists? path
+          end if File.exist? path
         end
 
         res
