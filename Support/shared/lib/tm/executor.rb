@@ -53,8 +53,6 @@ require "#{ENV['TM_SUPPORT_PATH']}/lib/exit_codes.rb"
 require "#{ENV['TM_SUPPORT_PATH']}/lib/io.rb"
 require 'pathname'
 
-$KCODE = 'u' if RUBY_VERSION < "1.9"
-
 $stdout.sync = true
 
 module TextMate

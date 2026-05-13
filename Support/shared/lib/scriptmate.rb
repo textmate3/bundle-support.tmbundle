@@ -9,8 +9,6 @@ require "#{ENV['TM_SUPPORT_PATH']}/lib/tm/tempfile.rb"
 require 'cgi'
 require 'fcntl'
 
-$KCODE = 'u' if (RUBY_VERSION.to_f < 1.9)
-
 $SCRIPTMATE_VERSION = "$Revision$"
 
 def my_popen3(*cmd) # returns [stdin, stdout, strerr, pid]
