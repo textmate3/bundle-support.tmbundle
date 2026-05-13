@@ -142,7 +142,7 @@ module TextMate
 
           result = ::IO.popen(command, 'w+') do |io|
             io << plist.to_plist; io.close_write
-            Plist.parse_xml io rescue nil
+            Plist.load io rescue nil
           end
 
           # Use a default block if none was provided
@@ -293,7 +293,7 @@ module TextMate
               raise WindowNotFound if $CHILD_STATUS == 54528  # -43
               raise "Error (#{text})" if $CHILD_STATUS != 0
 
-              Plist.parse_xml(text)
+              Plist.load(text)
             end
 
             if block_given? then
@@ -326,13 +326,13 @@ module TextMate
       private
 
       def run_dialog(command, *parms)
-        IO.popen("\"$DIALOG\" #{command} #{parms.shelljoin}") { |io| Plist.parse_xml(io.read) }
+        IO.popen("\"$DIALOG\" #{command} #{parms.shelljoin}") { |io| Plist.load(io) }
       end
 
       def run_modal_dialog(*params)
         token = %x{"$DIALOG" nib --load #{params.shelljoin}}
         plist = %x{"$DIALOG" nib --modal --wait #{token} --dispose #{token}}
-        Plist.parse_xml(plist)
+        Plist.load(plist)
       end
 
       # common to request_string, request_secure_string
