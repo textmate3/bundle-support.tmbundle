@@ -1,4 +1,3 @@
-require "#{ENV['TM_SUPPORT_PATH']}/private/track_usage.rb"
 #
 # String helpers for build command tokenization.
 #

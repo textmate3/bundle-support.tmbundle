@@ -1,5 +1,4 @@
 require "fileutils"
-require "#{ENV['TM_SUPPORT_PATH']}/private/track_usage.rb"
 require "#{ENV['TM_SUPPORT_PATH']}/lib/tm/tempfile.rb"
 
 module TextMate

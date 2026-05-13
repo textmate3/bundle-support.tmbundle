@@ -1,6 +1,5 @@
 # encoding: utf-8
 
-require "#{ENV['TM_SUPPORT_PATH']}/private/track_usage.rb"
 require "#{ENV['TM_SUPPORT_PATH']}/lib/escape.rb"
 require "#{ENV['TM_SUPPORT_PATH']}/lib/web_preview.rb"
 require "#{ENV['TM_SUPPORT_PATH']}/lib/io.rb"
