@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby18
+#!/usr/bin/env ruby
 #
 # Program to check and fix nested blocks.
 # By Sune Foldager, 2005.

@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby18 -wKU
+#!/usr/bin/env ruby -w
 
 sect, word = *ARGV
 page = %x{ man #{sect} #{word}|col -b }
