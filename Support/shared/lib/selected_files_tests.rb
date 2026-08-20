@@ -1,6 +1,6 @@
 # cheat a bit to let textmate.rb not fail its require
 ENV['TM_SUPPORT_PATH'] = '..'
-require 'textmate.rb'
+require_relative 'textmate'
 require 'test/unit'
 
 
