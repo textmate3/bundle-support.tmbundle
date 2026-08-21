@@ -1,0 +1,9 @@
+#!/bin/sh
+# A stand-in for file(1) used by scan_dir_tests.rb. For the nasty fixture it
+# prints raw bytes that are not valid UTF-8, reproducing the output that made
+# binary? raise ArgumentError before the raw-byte match fix. Everything else
+# is delegated to the real file(1).
+case "$1" in
+  *nasty_interpreter) printf '%s: a \377\376weird script\n' "$1" ;;
+  *) exec /usr/bin/file "$@" ;;
+esac
