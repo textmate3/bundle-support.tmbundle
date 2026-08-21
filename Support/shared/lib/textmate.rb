@@ -122,8 +122,10 @@ module TextMate
       elsif @binary_types.member?(ext) then
         true
       else
-        # ask the file shell command about the type
-        case `file #{e_sh file}`
+        # Ask the file shell command about the type. Match on raw bytes:
+        # file(1) output is not guaranteed to be valid UTF-8, and matching a
+        # regexp against an invalid UTF-8 string raises ArgumentError.
+        case `file #{e_sh file}`.b
         when /\bempty\b/ then
           # treat empty files as binary, but do not record the extension
           true
