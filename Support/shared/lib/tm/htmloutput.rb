@@ -41,7 +41,7 @@ HTMLOUTPUT_TEMPLATE = <<-HTML
     <img id="gradient" src="file://<%= e_url active_theme[:path] %>/images/header.png" alt="header">
     <p class="headline"><%= page_title %></p>
     <p class="type"><%= sub_title %></p>
-    <%- if File.exist?("#{active_theme[:path]}/images/teaser.png") -%>
+    <%- if File.exist?(active_theme[:path] + '/images/teaser.png') -%>
     <img id="teaser" src="file://<%= e_url active_theme[:path] %>/images/teaser.png" alt="teaser">
     <%- end -%>
     <div id="theme_switcher">
