@@ -88,6 +88,11 @@ module TextMate
 
         support_path = ENV['TM_SUPPORT_PATH']
 
+        # The ERB template reads these locals through binding, which ruby -w
+        # cannot see, so reference them here to silence the unused variable
+        # warnings that commands running under -w leak into their HTML output.
+        _ = [window_title, page_title, sub_title, support_path]
+
         ERB.new(HTMLOUTPUT_TEMPLATE, trim_mode: '%-').result(binding)
       end
 
