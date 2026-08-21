@@ -99,6 +99,11 @@ module TextMate
         if options[:create_error_pipe]
           tm_error_fd_read, tm_error_fd_write = ::IO.pipe
           tm_error_fd_read.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
+          # IO.pipe descriptors are close-on-exec by default since Ruby 2.0,
+          # so the write end must opt out or it will not survive into the
+          # child, leaving IO.for_fd(ENV['TM_ERROR_FD']) with a bad file
+          # descriptor.
+          tm_error_fd_write.close_on_exec = false
           ENV['TM_ERROR_FD'] = tm_error_fd_write.to_i.to_s
         end
 
