@@ -1,5 +1,5 @@
-# cheat a bit to let textmate.rb not fail its require
-ENV['TM_SUPPORT_PATH'] = '..'
+# Let textmate.rb resolve its Bundle Support requires against this checkout.
+ENV['TM_SUPPORT_PATH'] = File.expand_path('..', __dir__)
 require_relative 'textmate'
 require 'test/unit'
 
