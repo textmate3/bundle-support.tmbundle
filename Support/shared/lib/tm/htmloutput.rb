@@ -25,24 +25,24 @@ HTMLOUTPUT_TEMPLATE = <<-HTML
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
   <title><%= window_title %></title>
   <%- themes[:screen].each do |theme| -%>
-  <link rel="stylesheet" href="file://<%= e_url theme[:path] %>/style.css" type="text/css" charset="utf-8" media="screen">
+  <link rel="stylesheet" href="x-txmt-filehandle://<%= e_url theme[:path] %>/style.css" type="text/css" charset="utf-8" media="screen">
   <%- end -%>
   <%- themes[:print].each do |theme| -%>
-  <link rel="stylesheet" href="file://<%= e_url theme[:path] %>/print.css" type="text/css" charset="utf-8" media="print">
+  <link rel="stylesheet" href="x-txmt-filehandle://<%= e_url theme[:path] %>/print.css" type="text/css" charset="utf-8" media="print">
   <%- end -%>
-  <script src="file://<%= e_url support_path %>/script/default.js"    type="text/javascript" charset="utf-8"></script>
-  <script src="file://<%= e_url support_path %>/script/webpreview.js" type="text/javascript" charset="utf-8"></script>
-  <script>var image_path = "file://<%= e_url support_path %>/images/";</script>
-  <script src="file://<%= e_url support_path %>/script/sortable.js"   type="text/javascript" charset="utf-8"></script>
+  <script src="x-txmt-filehandle://<%= e_url support_path %>/script/default.js"    type="text/javascript" charset="utf-8"></script>
+  <script src="x-txmt-filehandle://<%= e_url support_path %>/script/webpreview.js" type="text/javascript" charset="utf-8"></script>
+  <script>var image_path = "x-txmt-filehandle://<%= e_url support_path %>/images/";</script>
+  <script src="x-txmt-filehandle://<%= e_url support_path %>/script/sortable.js"   type="text/javascript" charset="utf-8"></script>
   <%= html_head -%>
 </head>
 <body id="tm_webpreview_body" class="<%= active_theme[:class] %>">
   <div id="tm_webpreview_header">
-    <img id="gradient" src="file://<%= e_url active_theme[:path] %>/images/header.png" alt="header">
+    <img id="gradient" src="x-txmt-filehandle://<%= e_url active_theme[:path] %>/images/header.png" alt="header">
     <p class="headline"><%= page_title %></p>
     <p class="type"><%= sub_title %></p>
     <%- if File.exist?(active_theme[:path] + '/images/teaser.png') -%>
-    <img id="teaser" src="file://<%= e_url active_theme[:path] %>/images/teaser.png" alt="teaser">
+    <img id="teaser" src="x-txmt-filehandle://<%= e_url active_theme[:path] %>/images/teaser.png" alt="teaser">
     <%- end -%>
     <div id="theme_switcher">
       <form action="#" onsubmit="return false;">
