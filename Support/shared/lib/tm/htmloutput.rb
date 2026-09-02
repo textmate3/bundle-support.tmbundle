@@ -80,7 +80,9 @@ module TextMate
         html_head    = options[:html_head]    || ''
 
         if options[:fix_href] && File.exist?(ENV['TM_FILEPATH'].to_s)
-          html_head << "<base href='file://#{e_url ENV['TM_FILEPATH']}'>\n"
+          # A file:// base would turn every relative asset URL into a file:// URL, which a
+          # page served from TextMate's scheme cannot load, so the base uses that scheme.
+          html_head << "<base href='x-txmt-filehandle://#{e_url ENV['TM_FILEPATH']}'>\n"
         end
 
         themes = collect_themes

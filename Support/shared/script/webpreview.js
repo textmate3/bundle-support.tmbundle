@@ -15,7 +15,7 @@ function selectTheme(event) {
 	var replacements = {teaser: "teaser", gradient: "header"};
 	for(var r in replacements) {
 		var element = document.getElementById(r);
-		element.src = 'file://' + path + '/images/' + replacements[r] + ".png";
+		element.src = 'x-txmt-filehandle://' + path + '/images/' + replacements[r] + ".png";
 	}
 }
 

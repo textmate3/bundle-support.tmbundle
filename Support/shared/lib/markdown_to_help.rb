@@ -101,7 +101,7 @@ function setup_external_links() {
   }
 }
 </script>
-<base href="file://#{ENV['TM_BUNDLE_SUPPORT']}/" />
+<base href="x-txmt-filehandle://#{ENV['TM_BUNDLE_SUPPORT']}/" />
 HTML
 
   puts "<h2 id='sect_0'>Table of Contents</h2>"
