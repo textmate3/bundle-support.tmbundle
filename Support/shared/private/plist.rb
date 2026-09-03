@@ -16,6 +16,9 @@ module Plist
 
   def load(input)
     raw = read_input(input)
+    # No data is a valid answer: the dialog tool writes nothing when a menu or
+    # window is dismissed, and callers test for nil.
+    return nil if raw.nil? || raw.strip.empty?
     CFPropertyList.native_types(CFPropertyList::List.new(data: raw).value)
   rescue CFFormatError
     # Strict XML parsers (nokogiri, REXML) reject TextMate bundle files that
